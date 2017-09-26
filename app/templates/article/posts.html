@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% import "_macros.html" as macros %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="col-md-9">
+    {% for post in posts %}
+        {% if current_user.is_authenticated %}
+            {% if post.author_id == current_user.id or post.hide == 0 %}
+        <div class="panel panel-default row" style="opacity: 0.8;">
+            <div class="panel-heading well-sm">
+                <div class="row">
+                <h2 class="panel-title col-xs-9"><a href="{{ url_for('article.entry',postnum=post.id) }}"><strong>{{ post.title }}</strong></a></h2>
+                <div style="right: 10px;position:absolute;">
+                    {% for tag in tagsall %}
+                    {%  if tag.post_id == post.id  %}
+                    <span class="label label-primary">{{ tag.tag }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+            <div class="panel-body">
+            <div>{{ (post.body)[0:300] | striptags }}</div>
+            <div class="row">
+            <div class="col-md-6 clo-xs-12"><a class="text-danger" href="{{ url_for('article.entry',postnum=post.id) }}">阅读全文</a></div>
+            <div class="col-md-6"><p class="text-right text-muted">posted by {{ post.author.username }} at {{ moment(post.timestamp).format('YYYY-MM-DD | HH:mm:ss') }}</p></div>
+            </div></div>
+        </div>
+        {% endif %}
+        {% else %}
+        {% if post.hide == 0 %}
+        <div class="panel panel-default row" style="opacity: 0.8;">
+            <div class="panel-heading well-sm">
+                <div class="row">
+                <h2 class="panel-title col-xs-9"><a href="{{ url_for('article.entry',postnum=post.id) }}"><strong>{{ post.title }}</strong></a></h2>
+                <div style="right: 10px;position:absolute;">
+                    {% for tag in tagsall %}
+                    {%  if tag.post_id == post.id  %}
+                    <span class="label label-primary">{{ tag.tag }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+            <div class="panel-body well-sm">
+            <div>{{ (post.body | striptags)[0:300] | striptags }}</div>
+            <br/>
+            <div id="panel-footer" class="row">
+            <div class="col-md-6 clo-xs-12"><a class="text-danger" href="{{ url_for('article.entry',postnum=post.id) }}">阅读全文</a></div>
+            <div class="col-md-6"><p class="text-muted text-right">posted by {{ post.author.username }} at {{ moment(post.timestamp).format('YYYY-MM-DD | HH:mm:ss') }}</p></div>
+            </div></div>
+        </div>
+        {% endif %}
+        {% endif %}
+    {% endfor %}
+{% if pagination %}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, '.post') }}
+    </div>
+    {% endif %}
+</div>
+<div class="tags col-md-3" style="opacity: 0.8;">
+    <div class="panel panel-default">
+        <div class="panel-heading well-sm">
+            <div class="panel-title">Tags</div>
+        </div>
+        <div class="panel-body well-sm">
+            <ul class="nav nav-pills" role="tablist">
+            {% for tag in tags %}
+                <li class="" role="presentation">
+                    <a href="#">
+                        {{ tag }}
+                        <span class="badge">
+                            {{ tagsalllist.count(tag) }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+             </ul>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

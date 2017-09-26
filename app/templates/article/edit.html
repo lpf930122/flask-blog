@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='wangEditor/css/wangEditor.min.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='font-awesome.css') }}" />
+<script type="text/javascript" src="{{ url_for('static',filename='wangEditor/js/lib/jquery-1.10.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='wangEditor/js/wangEditor.min.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<form class="form" method="POST">
+    <div class="from-group">
+    {{ form.hidden_tag() }}
+    {{ form.title.label(for='posttitle') }}{{ form.title(id='posttitle',class='form-control',placeholder="请输入文章标题") }}
+    </div>
+    <div class="from-group">
+    {{ form.tag.label(for='posttag') }}{{ form.tag(id='posttag',class='form-control',placeholder="多个标签请用空格隔开") }}
+    </div>
+    <div class="checkbox">
+        <label>{{ form.hide(type='checkbox') }}不公开</label>
+    </div>
+    <div class="form-group">
+    {{ form.body(id="wangeditor",style="height:600px;") }}
+    </div>
+    <div class="from-group">
+    {{ form.submit(class='form-control btn btn-success') }}
+    </div>
+</form>
+</div>
+</div>
+
+{% block footer %}
+{% endblock %}
+
+
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script type="text/javascript">
+    var editor = new wangEditor('wangeditor');
+        editor.config.uploadImgUrl = '/article/upload';
+        editor.config.codeDefaultLang = 'python';
+        editor.config.uploadImgFileName = 'upload-file'
+        editor.create();
+        editor.$txt.html('<p>BalaBala......</p>');
+
+</script>
+{% endblock %}

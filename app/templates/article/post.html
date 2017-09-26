@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<script type="text/javascript">
+      	$(document).ready(function() {
+            $("#headroom").headroom();
+        });
+
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header"><h1>{{ post.title }}</h1></div>
+    <div class="panel panel-default">
+        <div class="panel-body well-lg">
+            {{ post.body | safe }}
+        </div>
+    </div>
+</div>
+{% endblock %}

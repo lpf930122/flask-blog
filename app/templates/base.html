@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static',filename='ico.png') }}">
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <title>{% block title %}一拾贰{% endblock %}</title>
+
+    <link href="{{ url_for('static',filename='css/bootstrap.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static',filename='jQuery.headroom.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='headroom.min.js') }}"></script>
+    <style type="text/css">
+        headroom{
+            transition: transform 0.25s ease-in-out 0s;
+            will-change: transform;
+        }
+        headroom--pinned{
+            transform: translateY(0px);
+        }
+        headroom--unpinned{
+            transform: translateY(-100%);
+        }
+    </style>
+
+
+{% block head %}
+    <style type="text/css">
+        body{
+            background-image: url({{ url_for('static',filename='background.jpg') }});
+            background-repeat:no-repeat;
+            background-attachment:fixed;
+            background-size:cover;
+            padding-bottom:90px;
+        }
+        footer{
+            position: absolute;
+            background: #000000;
+            color: #f5f5f5;
+            width:100%;
+            height:40px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $('#footer1').css("bottom", $(window).height() - $(document).height());
+        });
+
+{#        $(window).resize(function() {#}
+{#            window.location.reload();#}
+{#        });#}
+    </script>
+
+{% endblock %}
+  </head>
+
+<body>
+{% block navbar %}
+    <nav id="headroom" class="navbar navbar-inverse" style="opacity: 0.8;">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for('main.index') }}">一拾贰</a>
+          <a class="navbar-brand" href="{{ url_for('article.post') }}">分类</a>
+          {% if current_user.is_authenticated %}
+          <a class="navbar-brand" href="{{ url_for('article.editpost') }}">记录</a>
+          {% endif %}
+          <a class="navbar-brand" href="{{ url_for('main.comment') }}">留言</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        {% if current_user.is_authenticated %}
+            <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('auth.logout') }}">Sign Out</a></li></ul>
+        {% else %}
+           <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('main.index') }}">Login In</a></li></ul>
+        {% endif %}
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block footer %}
+    <footer id="footer1" style="opacity: 0.7;">
+        <div class="container">
+            <h5 class="text-center">ようこそ、これはバカのブログ&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Cover template for <a href="http://getbootstrap.com">Bootstrap</a> by Calamari&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Copyright © 2016 - 2016</h5>
+        </div>
+    </footer>
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+</body>
+</html>
